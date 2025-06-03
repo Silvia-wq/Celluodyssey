@@ -94,7 +94,7 @@ const RegisterView = () => {
         </form>
       </div>
       <p className={styles.register__footer}>
-        Already have an account? <Link href="/auth/login/">Login</Link>
+        Already have an account? <Link href="/auth/login">Login</Link>
       </p>
     </div>
   );
