@@ -2,8 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './register.module.scss';
-import Link from 'next/link';
+import styles from './Register.module.scss';
 
 const RegisterView = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,29 +22,32 @@ const RegisterView = () => {
       password: form.password.value,
     };
 
-    const result = await fetch('/api/user/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const result = await fetch('/api/user/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-    if (result.status === 200) {
-      form.reset();
+      if (result.ok) {
+        form.reset();
+        push('/auth/login');
+      } else {
+        setError('Registration failed. Please try again.');
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+    } finally {
       setIsLoading(false);
-      push('/auth/login');
-    } else {
-      setIsLoading(false);
-      const errorData = await result.json();
-      setError(errorData.message || 'Registration failed. Please try again.');
     }
   };
 
   return (
     <div className={styles.register}>
       <h1 className={styles.register__title}>Register</h1>
-      {error && <p className={styles.register__error}>{error}</p>}
+
       <div className={styles.register__form}>
         <form onSubmit={handleSubmit}>
           <div className={styles.register__form__item}>
@@ -88,13 +90,14 @@ const RegisterView = () => {
               required
             />
           </div>
-          <button className={styles.register__form__button} type="submit">
+          {error && <p className={styles.register__error}>{error}</p>}
+          <button className={styles.register__form__button} type="submit" disabled={isLoading}>
             {isLoading ? 'Loading...' : 'Register'}
           </button>
         </form>
       </div>
       <p className={styles.register__footer}>
-        Already have an account? <Link href="/auth/login">Login</Link>
+        Already have an account? <a href="/auth/login">Login</a>
       </p>
     </div>
   );
