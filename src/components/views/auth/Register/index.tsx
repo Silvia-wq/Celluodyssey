@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './Register.module.scss';
+
 
 const RegisterView = () => {
   const [isLoading, setIsLoading] = useState(false);
