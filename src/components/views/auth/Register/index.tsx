@@ -3,6 +3,7 @@
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './Register.module.scss';
+import Link from 'next/link';
 
 const RegisterView = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -93,7 +94,7 @@ const RegisterView = () => {
         </form>
       </div>
       <p className={styles.register__footer}>
-        Already have an account? <a href="/auth/login">Login</a>
+        Already have an account? <Link href="/auth/login/">Login</Link>
       </p>
     </div>
   );
